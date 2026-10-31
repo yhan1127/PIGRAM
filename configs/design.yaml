@@ -1,0 +1,74 @@
+# configs/design.yaml
+
+seed: 42
+device: cuda
+
+legacy:
+  scripts_dir: legacy
+  design_dir: legacy/design
+
+paths:
+  all_target_scan_root: results/design/all_targets
+  all_target_summary_dir: results/design/all_targets/summary
+
+  gfp_out_dir: results/design/gfp
+  gfp_candidate_csv: results/design/gfp/filtered_design_candidates/gfp_suppressive_design_candidates_collapsed.csv
+  gfp_design_csv: results/design/gfp/mutation_designs/gfp_suppressive_mutation_design_recommended.csv
+  gfp_validation_csv: results/design/gfp/mutation_designs/rnafold_validation/gfp_suppressive_mutation_rnafold_validation_long.csv
+
+  nelf_out_dir: results/design/nelf
+  all_targets_favorable_csv: results/design/all_targets/summary/all_targets_favorable_design_candidates.csv
+  all_targets_suppressive_csv: results/design/all_targets/summary/all_targets_suppressive_design_candidates.csv
+
+  downstream_processed_dir: data/downstream_processed
+  downstream_scores_csv: results/downstream/pigram/scores.csv
+  pigram_ckpt: runs/pigram/best_by_composite.pt
+  pigram_config: runs/pigram/config.json
+
+scan:
+  targets:
+    - GFP
+    - NELF
+    - HNRNPC
+    - CHK2
+    - UBLCP1
+
+gfp:
+  # Step A: optional diagnostic analysis from downstream scores.
+  run_analysis: true
+  processed_dir: data/downstream_processed
+  candidate_csv: results/downstream/pigram/scores.csv
+  target: GFP
+  splits: val,test
+  score_col: grammar_HA_top50_prob
+  top_candidates: 50
+  pair_top_k: 30
+  motif_top_patch_k: 8
+  checkpoint_path: runs/pigram/best_by_composite.pt
+  config_path: runs/pigram/config.json
+  analysis_out_dir: results/design/gfp
+
+  # Step B: mutation generation.
+  run_design: true
+  input_csv: results/design/gfp/filtered_design_candidates/gfp_suppressive_design_candidates_collapsed.csv
+  mutation_out_dir: results/design/gfp/mutation_designs
+  max_input_rows: 30
+  max_recommended_designs: 8
+
+gfp_fold:
+  design_csv: results/design/gfp/mutation_designs/gfp_suppressive_mutation_design_recommended.csv
+  out_dir: results/design/gfp/mutation_designs/rnafold_validation
+
+gfp_order:
+  design_csv: results/design/gfp/mutation_designs/gfp_suppressive_mutation_design_recommended.csv
+  validation_csv: results/design/gfp/mutation_designs/rnafold_validation/gfp_suppressive_mutation_rnafold_validation_long.csv
+  out_dir: results/design/gfp/mutation_designs/final_oligo_ordering
+  aptamers: default
+
+nelf:
+  favorable_csv: results/design/all_targets/summary/all_targets_favorable_design_candidates.csv
+  suppressive_csv: results/design/all_targets/summary/all_targets_suppressive_design_candidates.csv
+  out_dir: results/design/nelf/mutation_designs
+  target: NELF
+  top_candidates: 4
+  recommended_aptamers: NELF_6260,NELF_2616,NELF_4894,NELF_8425

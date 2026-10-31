@@ -1,0 +1,29 @@
+# configs/eval.yaml
+seed: 42
+device: cuda
+
+paths:
+  foundation_ckpt: runs/grammar/best.pt
+  distill_plan_json: results/grammar/distill_plan.json
+  pigram_ckpt: runs/pigram/best_by_composite.pt
+
+  val_pkl: data/processed/val.pkl
+  test_pkl: data/processed/test.pkl
+  val_ann_pkl: results/grammar/val_fine_pseudolabels.pkl
+  test_ann_pkl: results/grammar/test_fine_pseudolabels.pkl
+
+  out_dir: results/main
+  shuffle_out_dir: results/shuffle
+
+eval:
+  split: test
+  binary_threshold: 0.5
+  hard_eval_quantile: 0.75
+  easy_eval_quantile: 0.25
+
+shuffle:
+  modes:
+    - original
+    - patch
+    - motif
+    - both

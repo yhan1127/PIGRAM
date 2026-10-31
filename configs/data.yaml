@@ -1,0 +1,71 @@
+# configs/data.yaml
+
+seed: 42
+
+legacy:
+  legacy_src_dir: legacy
+
+split:
+  train_ratio: 0.87
+  val_ratio: 0.065
+  test_ratio: 0.065
+
+  rna_in: data/raw/prot_rna.pkl
+  dna_in: data/raw/prot_dna.pkl
+
+  rna_out: data/split/prot_rna.pkl
+  dna_out: data/split/prot_dna.pkl
+
+build:
+  rna_split: data/split/prot_rna.pkl
+  dna_split: data/split/prot_dna.pkl
+
+  train_out: data/processed/train.pkl
+  val_out: data/processed/val.pkl
+  test_out: data/processed/test.pkl
+  summary_out: data/processed/summary.json
+
+patch:
+  patch_k: 8
+  residue_motif_agg: topk_mean
+  patch_motif_agg: topk_mean
+  threshold: 6.0
+  residue_top_k: 3
+  patch_top_k: 3
+  energy_tau: 4.0
+  verbose: true
+  add_precomputed_attrs: true
+
+label:
+  beta_nt: 3.0
+  beta_patch: 6.0
+  contact_distance_tau: 4.0
+
+  stem_weight: 1.5
+  loop_weight: 1.1
+  unpaired_weight: 0.8
+
+  pairing_weight_scale: 0.5
+  gc_weight_scale: 0.25
+
+  position_weight_mode: center_mild
+  position_weight_scale: 0.25
+
+  label_tau: 0.30
+
+attr:
+  train_in: data/processed/train.pkl
+  val_in: data/processed/val.pkl
+  test_in: data/processed/test.pkl
+
+  train_out: data/processed/train.pkl
+  val_out: data/processed/val.pkl
+  test_out: data/processed/test.pkl
+
+  summary_out: data/processed/attr_summary.json
+  schema_check_out: data/processed/schema_check.json
+
+  expected_patch_attr_dim: 56
+  expected_motif_attr_dim: 27
+  overwrite: true
+  verbose: true

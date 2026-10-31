@@ -1,0 +1,43 @@
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.ipynb_checkpoints/
+
+# Environments
+.venv/
+venv/
+env/
+*.egg-info/
+
+
+
+runs/
+results/
+outputs/
+
+# Model checkpoints and large binary files
+*.pt
+*.pth
+*.ckpt
+*.pkl
+*.npy
+*.npz
+*.h5
+*.hdf5
+
+# Logs
+*.log
+wandb/
+tensorboard/
+
+# OS/editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Temporary smoke outputs
+runs/smoke/
+results/smoke/

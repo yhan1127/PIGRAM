@@ -1,0 +1,58 @@
+# configs/coarse.yaml
+seed: 42
+device: cuda
+
+paths:
+  train_pkl: data/processed/train.pkl
+  val_pkl: data/processed/val.pkl
+  test_pkl: data/processed/test.pkl
+  out_dir: runs/coarse
+
+model:
+  hidden_dim: 128
+  num_heads: 8
+  num_layers: 3
+  num_neg_rules: 3
+  num_pos_rules: 4
+  rule_dim: 8
+  dropout: 0.1
+  route_bias_init: -3.0
+  neg_sigma_min: 0.10
+  neg_sigma_max: 0.80
+  pos_sigma_min: 1.20
+  pos_sigma_max: 2.40
+  sigma_schedule_epochs: 30
+  sigma_residual_clip: 0.50
+
+train:
+  lr: 0.0002
+  weight_decay: 0.0001
+  num_epochs: 80
+  batch_size: 8
+  grad_clip: 1.0
+  warmup_epochs: 15
+  log_every: 200
+  early_stop_patience: 10
+  num_train_samples: -1
+  # Final cleaned implementation disables the old optional KMeans initializer.
+  # Re-enable only after explicitly porting and validating the initializer.
+  use_pos_kmeans_init: false
+
+loss:
+  interaction_loss_weight: 1.0
+  importance_loss_weight: 0.5
+  infonce_loss_weight: 0.5
+  grammar_loss_weight: 0.5
+  head_b_aux_loss_weight: 0.01
+  route_reg_weight: 0.05
+  route_target_max: 0.25
+  sigmoid_scale: 2.0
+  target_weight_scale: 3.0
+  infonce_pos_threshold: 0.5
+  infonce_temperature: 0.2
+  huber_delta: 0.10
+  pos_cv2_weight: 0.003
+  cv2_start_epoch: 20
+  cv2_ramp_epochs: 12
+  semantic_high_target_threshold: 0.50
+  semantic_min_pairs: 4

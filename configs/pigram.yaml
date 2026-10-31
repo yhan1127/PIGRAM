@@ -1,0 +1,62 @@
+# configs/pigram.yaml
+seed: 42
+device: cuda
+
+paths:
+  foundation_ckpt: runs/grammar/best.pt
+  distill_plan_json: results/grammar/distill_plan.json
+  out_dir: runs/pigram
+  train_pkl: data/processed/train.pkl
+  val_pkl: data/processed/val.pkl
+  test_pkl: data/processed/test.pkl
+  train_ann_pkl: results/grammar/train_fine_pseudolabels.pkl
+  val_ann_pkl: results/grammar/val_fine_pseudolabels.pkl
+  test_ann_pkl: results/grammar/test_fine_pseudolabels.pkl
+
+model:
+  hidden_dim: 128
+  num_heads: 8
+  num_layers: 3
+  num_neg_rules: 3
+  num_pos_rules: 4
+  dropout: 0.1
+  delta_clip: 2.0
+  route_bias_init: -3.5
+  route_max: 0.60
+
+train:
+  lr: 0.00007
+  weight_decay: 0.0001
+  num_epochs: 50
+  batch_size: 8
+  grad_clip: 1.0
+  early_stop_patience: 12
+  log_every: 200
+  num_train_samples: -1
+
+loss:
+  sigmoid_scale: 2.0
+  huber_delta: 0.1
+  err_gamma: 2.0
+  err_floor: 0.05
+  lambda_sparse: 0.03
+  lambda_corr_l2: 0.002
+  lambda_delta_l2: 0.0
+  route_budget: 0.05
+  lambda_budget: 0.5
+  route_cap: 0.55
+  lambda_route_cap: 0.2
+  easy_noharm_quantile: 0.25
+  lambda_easy_noharm: 1.0
+
+eval:
+  hard_eval_quantile: 0.75
+  easy_eval_quantile: 0.25
+  binary_threshold: 0.5
+
+selection:
+  select_auprc_weight: 0.10
+  select_hard_red_weight: 0.20
+  select_easy_penalty: 1.00
+  select_route_over_penalty: 0.20
+  select_p95_penalty: 0.05

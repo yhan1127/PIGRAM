@@ -1,0 +1,47 @@
+# configs/tiny_baseline.yaml
+seed: 42
+device: cpu
+
+paths:
+  train_pkl: data/example/train_tiny.pkl
+  val_pkl: data/example/val_tiny.pkl
+  test_pkl: data/example/test_tiny.pkl
+  out_root: runs/tiny/baselines
+
+model:
+  hidden_dim: 32
+  num_heads: 4
+  num_layers: 1
+  num_proto_types: 4
+  dropout: 0.1
+  route_bias_init: -3.0
+
+train:
+  models:
+    - concat_mlp
+    - bilinear
+    - transformer
+    - prototype
+  lr: 0.0002
+  weight_decay: 0.0001
+  num_epochs: 1
+  batch_size: 2
+  grad_clip: 1.0
+  log_every: 1
+  early_stop_patience: 2
+  num_train_samples: -1
+  warmup_epochs: 1
+  proto_res_out_dir: runs/tiny/baselines/proto_res
+
+loss:
+  interaction_loss_weight: 1.0
+  importance_loss_weight: 0.5
+  infonce_loss_weight: 0.5
+  head_b_aux_loss_weight: 0.01
+  route_reg_weight: 0.05
+  route_target_max: 0.25
+  sigmoid_scale: 2.0
+  target_weight_scale: 3.0
+  infonce_pos_threshold: 0.5
+  infonce_temperature: 0.2
+  huber_delta: 0.10

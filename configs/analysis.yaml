@@ -1,0 +1,129 @@
+# configs/analysis.yaml
+
+seed: 42
+device: cuda
+
+legacy:
+  scripts_dir: legacy
+  analysis_dir: legacy/analysis
+
+paths:
+  checkpoint_path: runs/pigram/best_by_composite.pt
+  foundation_ckpt: runs/grammar/best.pt
+  distill_plan_json: results/grammar/distill_plan.json
+
+  val_pkl: data/processed/val.pkl
+  test_pkl: data/processed/test.pkl
+
+  val_ann_pkl: results/grammar/val_fine_pseudolabels.pkl
+  test_ann_pkl: results/grammar/test_fine_pseudolabels.pkl
+
+  route_out_dir: results/route
+  figure_out_dir: results/figures
+
+  route_atlas_dir: results/route/test
+
+  coarse_rule_csv: results/route/test/route_by_coarse_rule.csv
+  fine_rule_csv: results/route/test/route_by_fine_subtype.csv
+
+route:
+  splits: test,val
+  sigmoid_scale: 2.0
+  high_route_quantile: 0.90
+  hard_quantile: 0.75
+  easy_quantile: 0.25
+  min_rescue_delta: 0.01
+  min_easy_harm_delta: 0.005
+  top_n_pairs: 200
+  top_attr_n: 10
+  patch_attr_names_json: ""
+  motif_attr_names_json: ""
+
+route_fig:
+  fine_min_support: 1
+  fine_sort: grammar
+  annotate: false
+
+fine_fig:
+  split: test
+  rule_order: "0,1,2,3,4,5,6"
+  output_prefix: single_fine_refinement_composition
+
+case:
+  run_dir: runs/pigram
+  checkpoint_name: best_by_composite.pt
+  config_path: runs/pigram/config.json
+  summary_path: runs/pigram/summary.json
+
+  easy_sample: 234
+  rescued_sample: 172
+
+  sigmoid_scale: 0.0
+  use_recommended_windows: 1
+  keep_all_motifs: 1
+
+  zoom_rows_easy: 80
+  zoom_rows_rescued: 80
+  top_k_boxes: 8
+
+  easy_row_start: -1
+  easy_row_end: -1
+  easy_col_start: -1
+  easy_col_end: -1
+
+  rescued_row_start: -1
+  rescued_row_end: -1
+  rescued_col_start: -1
+  rescued_col_end: -1
+
+  route_vmax: 0.0
+  correction_vlim: 0.0
+
+structure:
+  structures_dir: structures
+  pymol_out_dir: results/structure/pymol
+  rendered_png_dir: results/structure/rendered_png
+  structure_fig_out_dir: results/figures/structure
+
+  cases:
+    - "234:4NGG:A:B:grammar_easy"
+    - "172:6J4E:B:CD:rescued_hard"
+
+  top_motifs: 2
+  motifs: ""
+
+  route_vmax: -1.0
+  correction_vlim: -1.0
+
+  image_width: 1800
+  image_height: 1400
+
+  # Used by structure_fig.py after PyMOL PNGs are rendered.
+  figure_cases:
+    - label: "Case 1"
+      case_dir: results/structure/pymol/sample234_4NGG_A_B/motif0
+    - label: "Case 2"
+      case_dir: results/structure/pymol/sample172_6J4E_B_CD/motif0
+
+  output_png: results/figures/structure/structure_projection.png
+  output_pdf: results/figures/structure/structure_projection.pdf
+
+attr_route:
+  signature_csv: results/route/test/route_signature_table.csv
+  out_dir: results/figures/attr_route
+  top_k: 10
+  focus_groups: auto
+
+rule_attr:
+  run_dir: runs/pigram
+  checkpoint_name: best_by_composite.pt
+  checkpoint_path: ""
+  config_json: runs/pigram/config.json
+  out_dir: results/figures/rule_attr
+
+  n_rules: 7
+  top_rules: 7
+  rule_ids: "0,1,2,3,4,5,6"
+  max_cases: 0
+  require_forward: false
+  annotate: false

@@ -1,0 +1,98 @@
+# configs/downstream.yaml
+
+seed: 42
+device: cuda
+
+legacy:
+  legacy_src_dir: legacy
+  scripts_dir: legacy
+
+paths:
+  raw_downstream_dir: data/downstream
+  processed_downstream_dir: data/downstream_processed
+
+  foundation_ckpt: runs/grammar/best.pt
+  distill_plan_json: results/grammar/distill_plan.json
+  pigram_ckpt: runs/pigram/best_by_composite.pt
+
+  baselines_root: runs/baselines
+
+  pigram_eval_out: results/downstream/pigram
+  baseline_eval_out: results/downstream/baselines
+
+preprocess:
+  targets:
+    - GFP
+    - NELF
+    - HNRNPC
+    - CHK2
+    - UBLCP1
+
+  expected_positives:
+    GFP: 520
+    NELF: 797
+    HNRNPC: 233
+    CHK2: 1255
+    UBLCP1: 892
+
+  preserve_original_split: true
+  add_dummy_label: true
+
+  patch_k: 8
+  dummy_distance: 99.0
+  max_per_split: 0
+  keep_coords: false
+
+eval:
+  targets:
+    - GFP
+    - NELF
+    - HNRNPC
+    - CHK2
+    - UBLCP1
+
+  splits:
+    - val
+    - test
+
+  readouts:
+    - H_A
+    - S_final
+
+  k_values:
+    - 1
+    - 3
+    - 5
+    - 10
+    - 20
+    - 50
+
+  selection_metric: composite
+
+selection:
+  prauc_weight: 0.4
+  top10_weight: 0.3
+  top50_weight: 0.3
+
+sampling:
+  num_random_trials: 100
+  random_seed: 42
+
+
+paths:
+  raw_downstream_dir: data/downstream
+  processed_downstream_dir: data/downstream_processed
+
+  foundation_ckpt: runs/grammar/best.pt
+  distill_plan_json: results/grammar/distill_plan.json
+  pigram_ckpt: runs/pigram/best_by_composite.pt
+
+  baselines_root: runs/baselines
+  concat_mlp_ckpt: runs/baselines/concat_mlp/best.pt
+  bilinear_ckpt: runs/baselines/bilinear/best.pt
+  transformer_ckpt: runs/baselines/transformer/best.pt
+  prototype_ckpt: runs/baselines/prototype/best.pt
+  proto_res_ckpt: runs/baselines/proto_res/best.pt
+
+  pigram_eval_out: results/downstream/pigram
+  baseline_eval_out: results/downstream/baselines
